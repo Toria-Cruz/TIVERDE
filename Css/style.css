@@ -1,0 +1,23 @@
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    color: #e68c3a;
+}
+
+footer {
+    margin-top: 50px;
+}
+
+.hero {
+    background: url('../img/ecococococo.jpg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+}
+.section-heading {
+    margin-bottom: 40px;
+}
