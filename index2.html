@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EcoTech Energy Solutions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="Css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark custom-navbar">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#"
+                ><img src="img/tecnologia-verde.png" alt="Logo" class="logo" width="30" height="30" class="me-3">
+                </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#about">Sobre</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Serviços</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contato</a></li>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end"></div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding-left: 10px;">
+                    <button type="button" class=" btn btn-sm  btn-outline-dark btn-light">Sign In</button>
+                    <button type="button" class=" btn btn-sm btn-outline-light btn-dark">Register</button>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="overlay">
+            <img src="./img/nav-backgorund.jpg" alt="Imagem de Fundo" class="background-img">
+        </div>
+        <div class="container">
+            <h1 class="highlight-text">EcoTech Energy Solutions</h1>
+            <p class="highlight-text">Monitoramento inteligente e eficiência energética para um futuro sustentável.</p>
+        </div>
+    </header>
+    
+    
+
+    <section id="about" class="container py-5">
+        <h2 class="text-center section-heading">Sobre Nós</h2>
+        <p>A EcoTech Energy Solutions é uma startup inovadora focada na otimização do consumo de energia em sistemas de TI. Nosso objetivo é reduzir o impacto ambiental e promover a eficiência energética por meio do uso de tecnologias limpas e renováveis.</p>
+    </section>
+
+    <section id="services" class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center section-heading">Nossos Serviços</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Monitoramento Inteligente</h4>
+                    <p>Uso de sensores IoT e dashboards em tempo real para análise do consumo energético.</p>
+                </div>
+                <div class="col-md-6">
+                    <h4>Otimização Energética</h4>
+                    <p>Soluções eficientes para reduzir o desperdício de energia em data centers e infraestruturas de TI.</p>
+                </div>
+                <div class="col-md-6">
+                    <h4>Integração com Energias Renováveis</h4>
+                    <p>Implementação de energia solar e eólica para alimentar sistemas de TI de forma sustentável.</p>
+                </div>
+                <div class="col-md-6">
+                    <h4>Consultoria Especializada</h4>
+                    <p>Avaliação personalizada e recomendações para maximizar a eficiência energética.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="container py-5">
+        <h2 class="text-center section-heading">Fale Conosco</h2>
+        <p class="text-center">Entre em contato e descubra como podemos ajudar sua empresa a economizar energia e ser mais sustentável.</p>
+        <form>
+            <div class="mb-3">
+                <label for="name" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Mensagem</label>
+                <textarea class="form-control" id="message" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </section>
+
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2025 EcoTech Energy Solutions - Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
