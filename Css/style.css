@@ -69,6 +69,27 @@ footer {
   height: auto;
 }
 
+.img-kamila {
+  max-width: 100%;
+  height: auto;
+  padding: 10px;
+}
+
+.img-top-space {
+  margin-top: 5px; /* ajuste conforme necessário */
+}
+
+.img-fluid {
+  max-width: 103%;
+  height: auto;
+  padding-top: 16px;
+}
+
+.tag-consumo {
+  padding-top: 55px;
+}
+
+
 
 .informacoes {
   padding-left: 40px;
@@ -155,12 +176,12 @@ footer {
     background-color: #4FA095 !important;
   }
 
-  .container {
+  /* .container {
     display: flex;
     justify-content: center; /* Centraliza os gráficos */
-    gap: 20px; /* Espaçamento entre eles */
-    flex-wrap: wrap; /* Para quebrar em telas menores */
-  }
+    /* gap: 20px; Espaçamento entre eles */
+    /* flex-wrap: wrap; Para quebrar em telas menores */
+  /*  */
   
   .chart-container {
     width: 45%; /* Ajuste conforme o tamanho desejado */
