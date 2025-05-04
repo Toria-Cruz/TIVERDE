@@ -4,6 +4,7 @@ html, body {
   width: 100%;             /* Em vez de 100vw */
   margin: 0;
   padding: 0;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 h2 {
@@ -31,7 +32,7 @@ footer {
 
 #header-nav {
     height: 90px;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .card-img-top {
@@ -44,6 +45,11 @@ footer {
 #paragrafo {
     text-align: justify;
     padding-left: 40px;
+}
+
+.logo {
+  width: 50px;             /* Ajuste o tamanho conforme desejar */
+  height: auto;
 }
 
 #about {
