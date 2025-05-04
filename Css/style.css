@@ -46,7 +46,25 @@ footer {
 }
 
 #logos {
-  gap: 0;
+  padding: 25px;              /* Remove o padding grande que jogava as logos para baixo */
+  display: flex;
+  gap: 20px;               /* Espaçamento entre as logos */
+  align-items: flex-start; /* Alinha ao topo */
+}
+
+.logo-img {
+  width: 25px;             /* Ajuste o tamanho conforme desejar */
+  height: auto;
+}
+
+
+.informacoes {
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 40px;
+  padding-top: 40px;
+  text-align: justify;
+  color: #ffffff !important;
 }
 
 .hero {
