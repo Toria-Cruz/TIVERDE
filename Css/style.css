@@ -10,8 +10,9 @@ h2 {
     color: #ffffff !important;
 }
 
-h2 .tag-visao {
+.tag-visao {
     color: #ffffff !important;
+    background-color: #339989; color: rgb(105, 12, 53); text-align: center; padding: 25px 0;
 }
 
 footer {
