@@ -148,3 +148,14 @@ footer {
   .bg-dark {
     background-color: #4FA095 !important;
   }
+
+  .container {
+    display: flex;
+    justify-content: center; /* Centraliza os gráficos */
+    gap: 20px; /* Espaçamento entre eles */
+    flex-wrap: wrap; /* Para quebrar em telas menores */
+  }
+  
+  .chart-container {
+    width: 45%; /* Ajuste conforme o tamanho desejado */
+  }
