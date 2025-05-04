@@ -1,7 +1,9 @@
 
 html, body {
-  height: 100%;
+  background-color: #000e22;
+  width: 100%;             /* Em vez de 100vw */
   margin: 0;
+  padding: 0;
 }
 
 h2 {
@@ -10,6 +12,41 @@ h2 {
 
 footer {
     margin-top: 50px;
+}
+
+.image-spacing {
+   column-gap: 86px;
+}
+/* id card-img  */
+#card-img {
+    column-gap: 86px;
+    margin-bottom: 51px;
+    
+}
+
+#header-nav {
+    height: 90px;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+}
+
+#paragrafo {
+    text-align: justify;
+    padding-left: 40px;
+}
+
+#about {
+  font-size: 48px;
+  color: #4FA095 !important;
+}
+
+#logos {
+  gap: 0;
 }
 
 .hero {
@@ -48,8 +85,16 @@ footer {
 
 .section {
     padding: 80px 0;
-    background-color: aqua;
+    
 }
+
+.container-services {
+  margin-left: 0;
+  margin-right: 0;
+  text-align: center;
+
+}
+
 
 .section-heading {
     margin-bottom: 40px;

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="Css/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark custom-navbar">
+    <nav id="header-nav" class="navbar navbar-expand-lg navbar-dark bg-dark custom-navbar">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#"
                 ><img src="img/tecnologia-verde.png" alt="Logo" class="logo" width="30" height="30" class="me-3">
@@ -23,8 +23,8 @@
                     <li class="nav-item"><a class="nav-link" href="#contact">Contato</a></li>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end"></div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding-left: 10px;">
-                    <button type="button" class=" btn btn-sm  btn-outline-dark btn-light">Sign In</button>
-                    <button type="button" class=" btn btn-sm btn-outline-light btn-dark">Register</button>
+                    <button id="login-botao" type="button" class="btn btn-sm  btn-outline-dark btn-light">Sign In</button>
+                    <button id="cadastro-botao" type="button" class="btn btn-sm btn-outline-light btn-dark">Register</button>
                     </div>
                 </ul>
             </div>
@@ -41,56 +41,74 @@
         </div>
     </header>
     
+    <div class="container my-5">
+        <div id="card-img" class="d-flex justify-content-center align-items-center">
+            <div class="text-center">
+                <h2 class="section-heading">Nossa Missão</h2>
+                    <img src="img/4_consul.png" alt="Imagem 1" class="background-img image-spacing">
+            </div>
+            <div class="text-center">
+                <h2 class="section-heading">Nossa Visão</h2>
+                    <img src="img/4_consul.png" alt="Imagem 2" class="background-img">
+            </div>
+        </div>
+    </div>
     
 
-    <section id="about" class="container py-5">
-        <h2 class="text-center section-heading">Sobre Nós</h2>
-        <p>A EcoTech Energy Solutions é uma startup inovadora focada na otimização do consumo de energia em sistemas de TI. Nosso objetivo é reduzir o impacto ambiental e promover a eficiência energética por meio do uso de tecnologias limpas e renováveis.</p>
-    </section>
 
-    <section id="services" class="bg-light py-5">
+    <div class="container-services">
+        <section id="services" class="bg-light py-5">
+            <!-- sobre nós -->
+            <div class="container">
+                <h2 id="about" class="text-center section-heading">Sobre nós</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img src="img/tecnicos.jpg" class="card-img-top" alt="Imagem 1">
+                        </div>
+                    </div>
+                    <div id="paragrafo" class="col-md-8 fs-4 d-flex align-items-center">
+                        <p>A EcoTech Energy Solutions é uma startup inovadora focada na otimização do consumo de energia em sistemas de TI. 
+                            Nosso objetivo é reduzir o impacto ambiental e promover a eficiência energética por meio do uso de tecnologias limpas e renováveis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>           
+
+    <div class="informacoes">
         <div class="container">
-            <h2 class="text-center section-heading">Nossos Serviços</h2>
             <div class="row">
-                <div class="col-md-6">
-                    <h4>Monitoramento Inteligente</h4>
-                    <p>Uso de sensores IoT e dashboards em tempo real para análise do consumo energético.</p>
+                <!-- Coluna com as 3 logos lado a lado -->
+                <div class="col-md-4 d-flex align-items-center">
+                    <div id="logos" class="row w-74">
+                        <div class="col-4">
+                            <img src="img/X Logo.png" class="img-fluid" alt="Logo 1">
+                        </div>
+                        <div class="col-4">
+                            <img src="img/insta logo.png" class="img-fluid" alt="Logo 2">
+                        </div>
+                        <div class="col-4">
+                            <img src="img/linkedin logo.png" class="img-fluid" alt="Logo 3">
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <h4>Otimização Energética</h4>
-                    <p>Soluções eficientes para reduzir o desperdício de energia em data centers e infraestruturas de TI.</p>
-                </div>
-                <div class="col-md-6">
-                    <h4>Integração com Energias Renováveis</h4>
-                    <p>Implementação de energia solar e eólica para alimentar sistemas de TI de forma sustentável.</p>
-                </div>
-                <div class="col-md-6">
-                    <h4>Consultoria Especializada</h4>
-                    <p>Avaliação personalizada e recomendações para maximizar a eficiência energética.</p>
+    
+                <!-- Parágrafo à direita -->
+                <div id="paragrafo" class="col-md-8 fs-4 d-flex align-items-center">
+                    <div class="col">
+                        <p>A EcoTech Energy Solutions é uma startup inovadora focada na otimização do consumo de energia em sistemas de TI. 
+                            Nosso objetivo é reduzir o impacto ambiental e promover a eficiência energética por meio do uso de tecnologias limpas e renováveis.</p>
+                    </div>
+                    <div class="col">
+                        
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <section id="contact" class="container py-5">
-        <h2 class="text-center section-heading">Fale Conosco</h2>
-        <p class="text-center">Entre em contato e descubra como podemos ajudar sua empresa a economizar energia e ser mais sustentável.</p>
-        <form>
-            <div class="mb-3">
-                <label for="name" class="form-label">Nome</label>
-                <input type="text" class="form-control" id="name" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">E-mail</label>
-                <input type="email" class="form-control" id="email" required>
-            </div>
-            <div class="mb-3">
-                <label for="message" class="form-label">Mensagem</label>
-                <textarea class="form-control" id="message" rows="3" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Enviar</button>
-        </form>
-    </section>
+    </div>
+    
+    
 
     <footer class="bg-dark text-white text-center py-3">
         <p>&copy; 2025 EcoTech Energy Solutions - Todos os direitos reservados.</p>
