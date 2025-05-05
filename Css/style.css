@@ -77,7 +77,46 @@ footer {
   padding-top: 55px;
 }
 
+#graf-nav {
+  background-color: #ffffff;
+  padding: 20px;
+  text-align: center;
 
+}
+
+#titulo-disp {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Flex container para alinhar tudo lado a lado */
+.bloco-central {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 150px;
+  flex-wrap: wrap;
+}
+
+/* Bloco da imagem + texto */
+.img-vitoria {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.tecnicos-img,
+.grafico-img {
+  max-width: 300px;
+  height: auto;
+}
+
+.texto {
+  text-align: left;
+  color: #000;
+}
 
 .informacoes {
   padding-left: 40px;
@@ -211,39 +250,7 @@ h2 {
     color: #e9e9e9;
     margin-bottom: 8px;
 }
-.right-section {
-    flex: 1;
-    min-width: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.pie-chart-container {
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-}
-.pie-chart-title {
-    color: #777;
-    font-size: 0.9em;
-    margin-bottom: 10px;
-}
-/* Placeholder para o gráfico de pizza - seria gerado por JS ou incluído como imagem */
-.pie-chart {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background-color: #dd1212;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.8em;
-    color: #888;
-    margin: 0 auto 10px;
-}
-.pie-chart span {
-    text-align: center;
-}
+
 
 .container-imagens {
   display: flex; /* Cria um contêiner flexível */
@@ -263,18 +270,6 @@ h2 {
   height: auto; /* Mantém a proporção da imagem */
 }
 
-.img-vitoria {
-  display: flex;
-  gap: 20px;
-}
-
-
-.tecnicos-img,
-.grafico-img {
-  width: 100%; /* Ajuste conforme necessário */
-  max-width: 400px; /* Limita o tamanho máximo */
-  height: auto;
-}
 
 .bg-dark-1 {
   background-color: #0f6ca1 !important;
