@@ -91,12 +91,11 @@ footer {
   text-align: center;
 }
 
-/* Flex container para alinhar tudo lado a lado */
 .bloco-central {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 150px;
+  gap: 40px;
   flex-wrap: wrap;
 }
 
@@ -105,18 +104,46 @@ footer {
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap; /* Faz o texto ficar abaixo da imagem em telas pequenas */
 }
 
 .tecnicos-img,
 .grafico-img {
   max-width: 300px;
+  width: 100%;
   height: auto;
 }
 
 .texto {
   text-align: left;
   color: #000;
+  max-width: 300px;
 }
+
+@media (max-width: 768px) {
+  .bloco-central {
+    flex-direction: column;
+    align-items: center;
+  }
+  .img-vitoria {
+    flex-direction: column;
+    align-items: center;
+  }
+  .texto {
+    text-align: center;
+    max-width: 90%;
+  }
+
+  #titulo-disp {
+    font-size: 26px;
+  }
+
+  .grafico-img,
+  .tecnicos-img {
+    max-width: 90%;
+  }
+}
+
 
 .informacoes {
   padding-left: 40px;
