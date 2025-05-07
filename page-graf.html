@@ -6,6 +6,7 @@
     <title>EcoTech Energy Solutions</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="Css/style.css">
+    <link rel="stylesheet" href="js/index.js">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark custom-navbar">
@@ -70,7 +71,6 @@
           <div class="img-vitoria">
             <img class="tecnicos-img" src="img/tecnicos.jpg">
             <div class="texto">
-              <p>Luminárias: 5</p>
               <p>Ar-Condicionado: 7</p>
               <p>Computadores: 16</p>
               <p>Servidores: 1</p>
@@ -80,6 +80,28 @@
           <img class="grafico-img" src="img/image 1.png">
         </div>
       </div>
+
+      <div id="graf-nav">
+        <h1 id="titulo-disp">Informações de Consumo Mensal</h1>
+        <select name="info-tabela" id="info-tabela" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+          <option value="">Selecione o mês</option>
+          <option value="Janeiro">Janeiro</option>
+          <option value="Fevereiro">Fevereiro</option>
+          <option value="Março">Março</option>
+          <option value="Abril">Abril</option>
+          <option value="Maio">Maio</option>
+          <option value="Junho">Junho</option>
+          <option value="Julho">Julho</option>
+          <option value="Agosto">Agosto</option>
+          <option value="Setembro">Setembro</option>
+          <option value="Outubro">Outubro</option>
+          <option value="Novembro">Novembro</option>
+          <option value="Dezembro">Dezembro</option>
+        </select>
+      
+        <div id="tabela-info"></div>
+      </div>
+      
       
 
 
@@ -138,5 +160,6 @@
     <p>&copy; 2025 EcoTech Energy Solutions - Todos os direitos reservados.</p>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/index.js"></script>
 </body>
 </html>
