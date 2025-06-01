@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const BASE_URL = 'http://localhost:8080';
-    let consumoChartInstance = null; // Variável para a instância do gráfico de consumo
-    let analiseChartInstance = null; // Nova variável para a instância do gráfico de análise
+    let consumoChartInstance = null;
+    let analiseChartInstance = null;
+    let consumoTipoChartInstance = null; // Nova variável para a instância do gráfico de pizza
 
     // --- Lógica para o Gráfico de Consumo em kWh (Não alterado) ---
     async function fetchConsumoData(ano = null) {
@@ -69,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- Lógica para popular o seletor de anos (Não alterado) ---
+    // --- Lógica para popular o seletor de anos (Consumo em kWh) ---
     async function populateAnoPicker() {
         try {
             const response = await fetch(`${BASE_URL}/api/consumo/anos-disponiveis`);
@@ -112,23 +113,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- Lógica para o Gráfico de Análise Gráfica (Comparação Multi-Ano) ---
-    async function fetchAnaliseData() { // Renomeada para melhor clareza, mas mantém o nome original para evitar quebras
+    // --- Lógica para o Gráfico de Análise Gráfica (Comparação Multi-Ano) (Não alterado) ---
+    async function fetchAnaliseData() {
         try {
-            // Buscando todos os dados de consumo para comparar entre anos
-            const response = await fetch(`${BASE_URL}/api/consumo`); // Usando o endpoint geral
+            const response = await fetch(`${BASE_URL}/api/consumo`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const allConsumoData = await response.json();
 
-            // Organiza os dados por ano e mês
             const dataByYear = {};
             const mesesOrdem = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
             allConsumoData.forEach(item => {
                 if (!dataByYear[item.ano]) {
-                    dataByYear[item.ano] = new Array(12).fill(0); // Inicializa com 0 para 12 meses
+                    dataByYear[item.ano] = new Array(12).fill(0);
                 }
                 const mesIndex = mesesOrdem.indexOf(item.mes);
                 if (mesIndex !== -1) {
@@ -137,29 +136,27 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             const datasets = Object.keys(dataByYear).sort().map(year => {
-                // Gera uma cor aleatória para cada linha
                 const randomColor = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`;
                 return {
                     label: `Consumo ${year}`,
                     data: dataByYear[year],
                     borderColor: randomColor,
-                    backgroundColor: randomColor.replace('1)', '0.2)'), // Cor mais clara para o preenchimento
-                    fill: false, // Não preenche a área abaixo da linha
-                    tension: 0.1 // Suaviza a linha
+                    backgroundColor: randomColor.replace('1)', '0.2)'),
+                    fill: false,
+                    tension: 0.1
                 };
             });
 
             const ctx = document.getElementById('analiseChart').getContext('2d');
 
-            // Destroi a instância anterior do gráfico se existir
             if (analiseChartInstance) {
                 analiseChartInstance.destroy();
             }
 
             analiseChartInstance = new Chart(ctx, {
-                type: 'line', // Tipo de gráfico de linha para comparação temporal
+                type: 'line',
                 data: {
-                    labels: mesesOrdem, // Rótulos dos meses no eixo X
+                    labels: mesesOrdem,
                     datasets: datasets
                 },
                 options: {
@@ -226,6 +223,110 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // --- Lógica para o Gráfico de Pizza (Consumo por Tipo de Equipamento) ---
+    async function fetchConsumoTipoData(ano) {
+        try {
+            const response = await fetch(`${BASE_URL}/api/consumo-equipamento/resumo-por-tipo?ano=${ano}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json(); // Ex: {"Ar-condicionado": 500, "Lâmpada LED": 150}
+
+            const labels = Object.keys(data);
+            const consumoValores = Object.values(data);
+
+            const backgroundColors = [
+                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9900', '#C9CBCF', '#E7E9ED'
+            ];
+            const borderColors = [
+                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9900', '#C9CBCF', '#E7E9ED'
+            ];
+
+
+            const ctx = document.getElementById('consumoTipoChart').getContext('2d');
+
+            if (consumoTipoChartInstance) {
+                consumoTipoChartInstance.destroy();
+            }
+
+            consumoTipoChartInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: consumoValores,
+                        backgroundColor: backgroundColors.slice(0, labels.length),
+                        borderColor: borderColors.slice(0, labels.length),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'right', // Coloca a legenda à direita
+                        },
+                        title: {
+                            display: true,
+                            text: `Consumo por Tipo de Equipamento em ${ano} (kWh)`
+                        }
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error('Erro ao buscar dados de consumo por tipo:', error);
+            const chartContainer = document.getElementById('consumoTipoChart').parentElement;
+            chartContainer.innerHTML = '<p>Não foi possível carregar o gráfico de consumo por tipo.</p>';
+        }
+    }
+
+    // --- Lógica para popular o seletor de anos (Gráfico de Pizza) ---
+    async function populateAnoPickerPizza() {
+        try {
+            const response = await fetch(`${BASE_URL}/api/consumo-equipamento/anos-disponiveis-consumo-tipo`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const anos = await response.json();
+            const anoPickerPizza = document.getElementById('ano-picker-pizza');
+
+            anoPickerPizza.innerHTML = '';
+
+            let latestAno = null;
+            if (anos && anos.length > 0) {
+                latestAno = Math.max(...anos);
+            }
+
+            anos.forEach(ano => {
+                const option = document.createElement('option');
+                option.value = ano;
+                option.textContent = ano;
+                if (ano === latestAno) {
+                    option.selected = true;
+                }
+                anoPickerPizza.appendChild(option);
+            });
+
+            if (latestAno) {
+                fetchConsumoTipoData(latestAno);
+            } else {
+                // Se não há anos, talvez mostre uma mensagem de erro ou defina um ano padrão
+                // fetchConsumoTipoData(new Date().getFullYear()); // Exemplo: define o ano atual como padrão
+                console.warn("Nenhum dado de ano disponível para o gráfico de pizza.");
+            }
+
+            anoPickerPizza.addEventListener('change', (event) => {
+                const selectedAno = event.target.value;
+                fetchConsumoTipoData(parseInt(selectedAno));
+            });
+
+        } catch (error) {
+            console.error('Erro ao popular o seletor de anos do gráfico de pizza:', error);
+        }
+    }
+
     // --- Lógica existente para a tabela de Informações de Consumo Mensal (Não alterado) ---
     const infoTabelaSelect = document.getElementById('info-tabela');
     if (infoTabelaSelect) {
@@ -265,7 +366,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Chama as funções para carregar os dados e renderizar os gráficos/listas ao carregar a página
-    populateAnoPicker();
-    fetchAnaliseData(); // Agora carrega o gráfico de comparação multi-ano
-    fetchDispositivosData();
+    populateAnoPicker(); // Para Consumo em kWh
+    fetchAnaliseData();
+    fetchDispositivosData(); // Para a lista de dispositivos
+    populateAnoPickerPizza(); // Para o seletor de anos do gráfico de pizza
 });

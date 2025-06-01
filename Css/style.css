@@ -1,8 +1,50 @@
+/* Para controlar a altura máxima de todos os gráficos gerados pelo Chart.js */
 #consumoChart,
 #analiseChart {
-    max-height: 400px; 
-    width: 100% !important; 
-    height: auto !important; 
+    max-height: 400px;
+    width: 100% !important;
+    height: auto !important;
+}
+
+#consumoTipoChart {
+    max-height: 250px;
+    max-width: 250px;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 auto;
+}
+
+/* Adicionado: Largura fixa para os pickers de ano */
+#ano-picker,
+#ano-picker-pizza {
+    width: 150px; /* Largura fixa. Ajuste este valor conforme o desejado */
+    margin-left: auto; /* Centraliza o picker dentro do seu contêiner */
+    margin-right: auto; /* Centraliza o picker dentro do seu contêiner */
+}
+
+/* Opcional: Para controlar a altura dos contêineres dos gráficos se a classe 'img-kamila' ou 'img-kamila1' não for suficiente */
+.img-kamila,
+.img-kamila1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 400px;
+}
+
+.bloco-central {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.col-md-6.text-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 html, body {
   background-color: #04000f;
