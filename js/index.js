@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     const BASE_URL = 'http://localhost:8080';
     let consumoChartInstance = null; // Variável para a instância do gráfico de consumo
+    let analiseChartInstance = null; // Nova variável para a instância do gráfico de análise
 
-    // --- Lógica para o Gráfico de Consumo em kWh ---
+    // --- Lógica para o Gráfico de Consumo em kWh (Não alterado) ---
     async function fetchConsumoData(ano = null) {
         try {
             let url = `${BASE_URL}/api/consumo`;
@@ -16,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             const data = await response.json();
 
-            // Ordena os dados por mês para garantir a ordem correta no gráfico
             const mesesOrdem = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
             data.sort((a, b) => mesesOrdem.indexOf(a.mes) - mesesOrdem.indexOf(b.mes));
 
@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const ctx = document.getElementById('consumoChart').getContext('2d');
 
-            // Destroi a instância anterior do gráfico se existir
             if (consumoChartInstance) {
                 consumoChartInstance.destroy();
             }
@@ -70,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- Lógica para popular o seletor de anos ---
+    // --- Lógica para popular o seletor de anos (Não alterado) ---
     async function populateAnoPicker() {
         try {
             const response = await fetch(`${BASE_URL}/api/consumo/anos-disponiveis`);
@@ -80,34 +79,29 @@ document.addEventListener('DOMContentLoaded', function() {
             const anos = await response.json();
             const anoPicker = document.getElementById('ano-picker');
 
-            // Limpa todas as opções existentes
-            anoPicker.innerHTML = ''; //
+            anoPicker.innerHTML = '';
 
             let latestAno = null;
             if (anos && anos.length > 0) {
-                latestAno = Math.max(...anos); // Encontra o ano mais recente
+                latestAno = Math.max(...anos);
             }
 
             anos.forEach(ano => {
                 const option = document.createElement('option');
                 option.value = ano;
                 option.textContent = ano;
-                if (ano === latestAno) { // Define o ano mais recente como selecionado
+                if (ano === latestAno) {
                     option.selected = true;
                 }
                 anoPicker.appendChild(option);
             });
 
-            // Se um ano mais recente foi encontrado, carrega o gráfico com ele
             if (latestAno) {
                 fetchConsumoData(latestAno);
             } else {
-                // Se não há anos, carrega com null (todos os dados disponíveis)
-                // Isso só aconteceria se o endpoint /anos-disponiveis retornasse vazio
                 fetchConsumoData(null);
             }
 
-            // Adiciona listener para recarregar o gráfico quando o ano mudar
             anoPicker.addEventListener('change', (event) => {
                 const selectedAno = event.target.value;
                 fetchConsumoData(selectedAno ? parseInt(selectedAno) : null);
@@ -118,61 +112,94 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-
-    // --- Lógica para o Gráfico de Análise Gráfica (Economia) ---
-    async function fetchAnaliseData() {
+    // --- Lógica para o Gráfico de Análise Gráfica (Comparação Multi-Ano) ---
+    async function fetchAnaliseData() { // Renomeada para melhor clareza, mas mantém o nome original para evitar quebras
         try {
-            const response = await fetch(`${BASE_URL}/api/analise-consumo`);
+            // Buscando todos os dados de consumo para comparar entre anos
+            const response = await fetch(`${BASE_URL}/api/consumo`); // Usando o endpoint geral
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const data = await response.json();
+            const allConsumoData = await response.json();
 
-            const analiseChartContainer = document.getElementById('analiseChart').parentElement;
+            // Organiza os dados por ano e mês
+            const dataByYear = {};
+            const mesesOrdem = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
-            if (data.mensagem) {
-                console.warn(data.mensagem);
-                analiseChartContainer.innerHTML = `<p>${data.mensagem}</p>`;
-                return;
-            }
+            allConsumoData.forEach(item => {
+                if (!dataByYear[item.ano]) {
+                    dataByYear[item.ano] = new Array(12).fill(0); // Inicializa com 0 para 12 meses
+                }
+                const mesIndex = mesesOrdem.indexOf(item.mes);
+                if (mesIndex !== -1) {
+                    dataByYear[item.ano][mesIndex] = item.consumo;
+                }
+            });
+
+            const datasets = Object.keys(dataByYear).sort().map(year => {
+                // Gera uma cor aleatória para cada linha
+                const randomColor = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`;
+                return {
+                    label: `Consumo ${year}`,
+                    data: dataByYear[year],
+                    borderColor: randomColor,
+                    backgroundColor: randomColor.replace('1)', '0.2)'), // Cor mais clara para o preenchimento
+                    fill: false, // Não preenche a área abaixo da linha
+                    tension: 0.1 // Suaviza a linha
+                };
+            });
 
             const ctx = document.getElementById('analiseChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
+
+            // Destroi a instância anterior do gráfico se existir
+            if (analiseChartInstance) {
+                analiseChartInstance.destroy();
+            }
+
+            analiseChartInstance = new Chart(ctx, {
+                type: 'line', // Tipo de gráfico de linha para comparação temporal
                 data: {
-                    labels: [`Economia em ${data.mes || 'último mês'}`],
-                    datasets: [{
-                        label: 'Percentual de Economia',
-                        data: [data.percentual || 0],
-                        backgroundColor: ['rgba(54, 162, 235, 0.6)'],
-                        borderColor: ['rgba(54, 162, 235, 1)'],
-                        borderWidth: 1
-                    }]
+                    labels: mesesOrdem, // Rótulos dos meses no eixo X
+                    datasets: datasets
                 },
                 options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            title: {
-                                display: true,
-                                text: 'Percentual (%)'
-                            }
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Consumo Mensal por Ano (kWh)'
                         }
                     },
-                    responsive: true,
-                    maintainAspectRatio: true
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Meses do Ano'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Energia Consumida (kWh)'
+                            }
+                        }
+                    }
                 }
             });
 
         } catch (error) {
-            console.error('Erro ao buscar dados de análise:', error);
+            console.error('Erro ao buscar dados para análise gráfica:', error);
             const chartContainer = document.getElementById('analiseChart').parentElement;
-            chartContainer.innerHTML = '<p>Não foi possível carregar o gráfico de análise.</p>';
+            chartContainer.innerHTML = '<p>Não foi possível carregar o gráfico de análise multi-ano.</p>';
         }
     }
 
-    // --- Lógica para a Lista de Dispositivos e Equipamentos ---
+    // --- Lógica para a Lista de Dispositivos e Equipamentos (Não alterado) ---
     async function fetchDispositivosData() {
         try {
             const response = await fetch(`${BASE_URL}/api/dispositivos/resumo-ativos`);
@@ -199,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- Lógica existente para a tabela de Informações de Consumo Mensal ---
+    // --- Lógica existente para a tabela de Informações de Consumo Mensal (Não alterado) ---
     const infoTabelaSelect = document.getElementById('info-tabela');
     if (infoTabelaSelect) {
         infoTabelaSelect.addEventListener('change', function () {
@@ -238,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Chama as funções para carregar os dados e renderizar os gráficos/listas ao carregar a página
-    populateAnoPicker(); // Popula o seletor de anos e carrega o gráfico com o ano mais recente por padrão
-    fetchAnaliseData();
+    populateAnoPicker();
+    fetchAnaliseData(); // Agora carrega o gráfico de comparação multi-ano
     fetchDispositivosData();
 });
