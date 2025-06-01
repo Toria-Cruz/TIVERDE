@@ -1,4 +1,9 @@
-
+#consumoChart,
+#analiseChart {
+    max-height: 400px; 
+    width: 100% !important; 
+    height: auto !important; 
+}
 html, body {
   background-color: #04000f;
   width: 100%;             /* Em vez de 100vw */
