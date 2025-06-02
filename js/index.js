@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const BASE_URL = 'http://localhost:8080';
+    const BASE_URL = 'https://morning-taiga-16872-e562d485bca5.herokuapp.com';
     let consumoChartInstance = null;
     let analiseChartInstance = null;
     let consumoTipoChartInstance = null;
