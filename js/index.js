@@ -2,9 +2,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const BASE_URL = 'http://localhost:8080';
     let consumoChartInstance = null;
     let analiseChartInstance = null;
-    let consumoTipoChartInstance = null; // Nova variável para a instância do gráfico de pizza
+    let consumoTipoChartInstance = null;
 
-    // --- Lógica para o Gráfico de Consumo em kWh (Não alterado) ---
+    // --- Lógica para o Gráfico de Consumo em kWh ---
     async function fetchConsumoData(ano = null) {
         try {
             let url = `${BASE_URL}/api/consumo`;
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- Lógica para o Gráfico de Análise Gráfica (Comparação Multi-Ano) (Não alterado) ---
+    // --- Lógica para o Gráfico de Análise Gráfica (Comparação Multi-Ano) ---
     async function fetchAnaliseData() {
         try {
             const response = await fetch(`${BASE_URL}/api/consumo`);
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- Lógica para a Lista de Dispositivos e Equipamentos (Não alterado) ---
+    // --- Lógica para a Lista de Dispositivos e Equipamentos ---
     async function fetchDispositivosData() {
         try {
             const response = await fetch(`${BASE_URL}/api/dispositivos/resumo-ativos`);
@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     maintainAspectRatio: true,
                     plugins: {
                         legend: {
-                            position: 'right', // Coloca a legenda à direita
+                            position: 'right',
                         },
                         title: {
                             display: true,
@@ -312,8 +312,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (latestAno) {
                 fetchConsumoTipoData(latestAno);
             } else {
-                // Se não há anos, talvez mostre uma mensagem de erro ou defina um ano padrão
-                // fetchConsumoTipoData(new Date().getFullYear()); // Exemplo: define o ano atual como padrão
                 console.warn("Nenhum dado de ano disponível para o gráfico de pizza.");
             }
 
@@ -327,47 +325,106 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- Lógica existente para a tabela de Informações de Consumo Mensal (Não alterado) ---
-    const infoTabelaSelect = document.getElementById('info-tabela');
-    if (infoTabelaSelect) {
-        infoTabelaSelect.addEventListener('change', function () {
-            const mes = this.value;
-            const tabelaContainer = document.getElementById('tabela-info');
-        
-            if (mes === 'Janeiro') {
-              const dados = [
-                { Equipamentos: "Ar-Condicionado", Consumo: "120 kWh", Data: "2025-01-31" },
-                { Equipamentos: "Equipamentos", Consumo: "30 m³", Data: "2025-01-31" },
-                { Equipamentos: "Energia elétrica", Consumo: "110 kWh", Data: "2025-01-31" },
-                { Equipamentos: "Água", Consumo: "28 m³", Data: "2025-01-28" },
-                { Equipamentos: "Energia elétrica", Consumo: "130 kWh", Data: "2025-01-29" },
-                { Equipamentos: "Água", Consumo: "29 m³", Data: "2025-01-30" },
-              ];
-          
-              let html = '<table class="table table-bordered table-bordered">';
-              html += '<thead class="table-info"><tr>';
-              html += '<th>Produto</th><th>Consumo</th><th>Ultima Verificação</th>';
-              html += '</tr></thead><tbody>';
-          
-              dados.forEach(item => {
-                html += `<tr>
-                  <td>${item.Equipamentos}</td>
-                  <td>${item.Consumo}</td>
-                  <td>${item.Data}</td>
-                </tr>`;
-              });
-          
-              html += '</tbody></table>';
-              tabelaContainer.innerHTML = html;
-            } else {
-              tabelaContainer.innerHTML = '';
+    // --- Lógica para a Tabela de Informações de Consumo Mensal (MODIFICADA) ---
+    const mesInfoTabelaSelect = document.getElementById('mes-info-tabela');
+    const anoInfoTabelaSelect = document.getElementById('ano-info-tabela');
+    const tabelaInfoContainer = document.getElementById('tabela-info');
+
+    // Função para buscar e exibir os dados da tabela
+    async function fetchTabelaConsumoDetalhe() {
+        const selectedMes = mesInfoTabelaSelect.value;
+        const selectedAno = anoInfoTabelaSelect.value;
+
+        if (!selectedMes || !selectedAno) {
+            tabelaInfoContainer.innerHTML = '<p>Selecione um mês e um ano para ver os detalhes de consumo.</p>';
+            return;
+        }
+
+        try {
+            const url = `${BASE_URL}/api/consumo-equipamento/detalhe-por-mes-ano?mes=${selectedMes}&ano=${selectedAno}`;
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        });
+            const dados = await response.json();
+
+            let html = '<table class="table table-bordered table-striped">'; // Adicionado table-striped para melhor visualização
+            html += '<thead class="table-info"><tr>';
+            html += '<th>Equipamento</th><th>Tipo</th><th>Consumo (kWh)</th><th>Mês</th><th>Ano</th>';
+            html += '</tr></thead><tbody>';
+
+            if (dados.length > 0) {
+                dados.forEach(item => {
+                    html += `<tr>
+                        <td>${item.dispositivo.nome}</td>
+                        <td>${item.dispositivo.tipo}</td>
+                        <td>${item.consumoKWh} kWh</td>
+                        <td>${item.mes}</td>
+                        <td>${item.ano}</td>
+                    </tr>`;
+                });
+            } else {
+                html += `<tr><td colspan="5">Nenhum dado de consumo encontrado para ${selectedMes} de ${selectedAno}.</td></tr>`;
+            }
+            html += '</tbody></table>';
+            tabelaInfoContainer.innerHTML = html;
+
+        } catch (error) {
+            console.error('Erro ao buscar dados da tabela de consumo detalhado:', error);
+            tabelaInfoContainer.innerHTML = '<p>Não foi possível carregar os detalhes de consumo.</p>';
+        }
     }
+
+    // Função para popular o picker de ano da tabela (usa o mesmo endpoint do gráfico de pizza)
+    async function populateAnoInfoTabelaPicker() {
+        try {
+            const response = await fetch(`${BASE_URL}/api/consumo-equipamento/anos-disponiveis-consumo-tipo`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const anos = await response.json();
+            
+            anoInfoTabelaSelect.innerHTML = '<option value="">Selecione o ano</option>'; // Opção default
+            let latestAno = null;
+            if (anos && anos.length > 0) {
+                latestAno = Math.max(...anos);
+            }
+
+            anos.forEach(ano => {
+                const option = document.createElement('option');
+                option.value = ano;
+                option.textContent = ano;
+                if (ano === latestAno) { // Seleciona o ano mais recente por padrão
+                    option.selected = true;
+                }
+                anoInfoTabelaSelect.appendChild(option);
+            });
+
+            // Se há um ano mais recente, tenta buscar os dados para ele, sem precisar de mês
+            // (A lógica de fetchTabelaConsumoDetalhe já cuida de 'selectedMes' ser vazio)
+            if (latestAno && mesInfoTabelaSelect.value) { // Só busca se um mês já estiver selecionado também
+                fetchTabelaConsumoDetalhe();
+            } else if (latestAno) { // Se não há mês selecionado, apenas mostra a mensagem
+                tabelaInfoContainer.innerHTML = '<p>Selecione um mês para ver os detalhes de consumo.</p>';
+            }
+
+
+        } catch (error) {
+            console.error('Erro ao popular o seletor de anos da tabela:', error);
+            tabelaInfoContainer.innerHTML = '<p>Não foi possível carregar os anos disponíveis.</p>';
+        }
+    }
+
+    // Adiciona event listeners para os pickers da tabela
+    mesInfoTabelaSelect.addEventListener('change', fetchTabelaConsumoDetalhe);
+    anoInfoTabelaSelect.addEventListener('change', fetchTabelaConsumoDetalhe);
 
     // Chama as funções para carregar os dados e renderizar os gráficos/listas ao carregar a página
     populateAnoPicker(); // Para Consumo em kWh
     fetchAnaliseData();
     fetchDispositivosData(); // Para a lista de dispositivos
     populateAnoPickerPizza(); // Para o seletor de anos do gráfico de pizza
+    populateAnoInfoTabelaPicker(); // Popula o seletor de ano da tabela
+    // A chamada inicial de fetchTabelaConsumoDetalhe é feita dentro de populateAnoInfoTabelaPicker,
+    // se um ano padrão for selecionado.
 });

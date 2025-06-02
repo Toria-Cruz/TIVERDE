@@ -31,21 +31,53 @@
     max-height: 400px;
 }
 
+/* Ajustes para o alinhamento da seção Dispositivos e Equipamentos */
+#graf-nav {
+  background-color: #ffffff;
+  /* REDUZIDO: Padding vertical de 20px para 10px */
+  padding: 10px 20px; /* top/bottom 10px, left/right 20px */
+  text-align: center;
+}
+
+#graf-nav .row { /* Alinha os itens da linha verticalmente ao centro */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza horizontalmente também */
+}
+
 .bloco-central {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   gap: 40px;
   flex-wrap: wrap;
-  padding: 20px;
+  /* REDUZIDO: Padding de 20px para 10px */
+  padding: 10px; /* Reduzido o padding interno do bloco */
 }
 
 .col-md-6.text-center {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: flex-start; /* Alinha o conteúdo ao topo da coluna para gráficos/pickers */
 }
+
+/* Adicional: Garante que o container da lista de dispositivos também usa flexbox para alinhamento */
+.img-vitoria {
+  display: flex;
+  align-items: center; /* Alinha verticalmente a imagem e o texto */
+  gap: 20px;
+  flex-wrap: wrap; /* Faz o texto ficar abaixo da imagem em telas pequenas */
+}
+
+/* Garante que o texto da lista de dispositivos não seja muito grande e permita o alinhamento */
+.texto {
+  text-align: left;
+  color: #000;
+  max-width: 300px; /* Mantém a largura máxima para o texto da lista */
+}
+
+
 html, body {
   background-color: #04000f;
   width: 100%;             /* Em vez de 100vw */
@@ -124,11 +156,11 @@ footer {
   padding-top: 55px;
 }
 
-#graf-nav {
+/* #graf-nav foi modificado acima */
+#graf-nav { /* Removido padding original aqui, foi modificado para cima */
   background-color: #ffffff;
-  padding: 20px;
+  /* padding: 20px; */ /* Removido */
   text-align: center;
-
 }
 
 #titulo-disp {
@@ -138,21 +170,18 @@ footer {
   text-align: center;
 }
 
-.bloco-central {
+/* .bloco-central foi modificado acima */
+/* .bloco-central {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   gap: 40px;
   flex-wrap: wrap;
-}
+  padding: 20px;
+} */
 
 /* Bloco da imagem + texto */
-.img-vitoria {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap; /* Faz o texto ficar abaixo da imagem em telas pequenas */
-}
+/* .img-vitoria foi movido para cima e modificado para melhor alinhamento */
 
 .tecnicos-img,
 .grafico-img {
@@ -161,11 +190,7 @@ footer {
   height: auto;
 }
 
-.texto {
-  text-align: left;
-  color: #000;
-  max-width: 300px;
-}
+/* .texto foi movido para cima e modificado para melhor alinhamento */
 
 @media (max-width: 768px) {
   .bloco-central {
@@ -285,7 +310,7 @@ footer {
     justify-content: center; /* Centraliza os gráficos */
     /* gap: 20px; Espaçamento entre eles */
     /* flex-wrap: wrap; Para quebrar em telas menores */
-  /*  */
+  /* */
   
   .chart-container {
     width: 45%; /* Ajuste conforme o tamanho desejado */
