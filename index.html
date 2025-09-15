@@ -6,6 +6,25 @@
     <title>EcoTech Energy Solutions</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="Css/style.css">
+    <style>
+  .chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    font-size: 26px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease-in-out;
+    z-index: 9999;
+  }
+
+</style>
 </head>
 <body>
     <nav id="header-nav" class="navbar navbar-expand-lg navbar-dark bg-dark custom-navbar">
@@ -31,6 +50,8 @@
         </div>
     </nav>
 
+    
+
     <header class="hero">
         <div class="overlay">
             <img src="./img/nav-backgorund.jpg" alt="Imagem de Fundo" class="background-img">
@@ -54,7 +75,6 @@
         </div>
     </div>
     
-
 
     <div class="container-services">
         <section id="services" class="bg-light py-5">
@@ -126,14 +146,66 @@
           </div>
         </div>
     </div>
-      
-      
-
-
     <footer class="bg-dark text-white text-center py-3">
         <p>&copy; 2025 EcoTech Energy Solutions - Todos os direitos reservados.</p>
     </footer>
+<!-- Botão flutuante do chatbot -->
+<button class="chat-button" onclick="toggleChat()">
+  <img src="img/atendente.png" alt="Atendente" class="chat-icon">
+</button>
+
+<!-- Caixa do chatbot -->
+<div class="chatbox" id="chatbox">
+  <div class="chat-header">
+    Atendimento Online <span class="status-dot"></span>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="Digite sua mensagem..." onkeypress="if(event.key==='Enter'){sendMessage();}">
+    <button onclick="sendMessage()">Enviar</button>
+  </div>
+</div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  function toggleChat() {
+    const chatbox = document.getElementById("chatbox");
+    chatbox.style.display = chatbox.style.display === "flex" ? "none" : "flex";
+    chatbox.style.flexDirection = "column";
+  }
+
+  function sendMessage() {
+    const input = document.getElementById("userInput");
+    const msg = input.value.trim();
+    if (msg === "") return;
+
+    addMessage(msg, "user");
+    input.value = "";
+
+    let resposta = "Desculpe, não entendi.";
+
+    if (msg.toLowerCase().includes("oi") || msg.toLowerCase().includes("olá")) {
+      resposta = "Olá! Eu sou o assistente do sistema de monitoramento.";
+    } else if (msg.toLowerCase().includes("ajuda")) {
+      resposta = "Posso te ajudar a entender os alertas, dispositivos e status do sistema.";
+    } else if (msg.toLowerCase().includes("aquecimento")) {
+      resposta = "O aquecimento é monitorado em tempo real. Se passar de 80°C, um alerta é disparado.";
+    } else if (msg.toLowerCase().includes("alerta")) {
+      resposta = "Os alertas são classificados em: verde (normal), amarelo (atenção) e vermelho (crítico).";
+    }
+
+    setTimeout(() => addMessage(resposta, "bot"), 500);
+  }
+
+  function addMessage(text, sender) {
+    const chat = document.getElementById("chatMessages");
+    const msgDiv = document.createElement("div");
+    msgDiv.classList.add("message", sender);
+    msgDiv.innerText = text;
+    chat.appendChild(msgDiv);
+    chat.scrollTop = chat.scrollHeight;
+  }
+</script>
 </body>
 </html>
